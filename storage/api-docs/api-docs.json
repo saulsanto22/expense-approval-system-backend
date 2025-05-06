@@ -1,0 +1,339 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Expense API",
+        "description": "This is the API documentation for managing expenses",
+        "termsOfService": "http://example.com/terms/",
+        "contact": {
+            "email": "contact@example.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/approval-stages": {
+            "post": {
+                "tags": [
+                    "ApprovalStages"
+                ],
+                "summary": "Create a new approval stage",
+                "operationId": "9f9dd9303e6492f5099f579e6bc74094",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreApprovalStageRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Approval stage created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApprovalStageResource"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/approvers": {
+            "post": {
+                "tags": [
+                    "Approvers"
+                ],
+                "summary": "Create a new approver",
+                "operationId": "1ea759d48a3c48ed52a26852ea2d7a62",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreApproverRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Approver created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Berhasil membuat data baru!"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "John Doe"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-01-01T00:00:00Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid data"
+                    }
+                }
+            }
+        },
+        "/api/expenses": {
+            "post": {
+                "tags": [
+                    "Expenses"
+                ],
+                "summary": "Create a new expense",
+                "operationId": "3ea1b5dbe09af5276ecb56173ce789bb",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreExpenseRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Expense created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ExpenseResource"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/expenses/{id}/approve": {
+            "patch": {
+                "tags": [
+                    "Expenses"
+                ],
+                "summary": "Approve an expense",
+                "operationId": "39f71219ab002de641e62b53f7caadaf",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ApproveExpenseRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Expense approved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ExpenseResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Expense not found"
+                    }
+                }
+            }
+        },
+        "/api/expenses/detail/{id}": {
+            "get": {
+                "tags": [
+                    "Expenses"
+                ],
+                "summary": "Get a single expense by ID",
+                "operationId": "b52bb59745bad31587fb31b5866be9fd",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Expense details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ExpenseResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Expense not found"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ApprovalStageResource": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Stage 1"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Description of approval stage"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-01-01T00:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-01-01T00:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "ApproveExpenseRequest": {
+                "required": [
+                    "approved_by"
+                ],
+                "properties": {
+                    "approved_by": {
+                        "description": "Nama atau ID pengguna yang menyetujui",
+                        "type": "string",
+                        "example": "manager1"
+                    }
+                },
+                "type": "object"
+            },
+            "StoreApprovalStageRequest": {
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "Stage 1"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Description of approval stage"
+                    }
+                },
+                "type": "object"
+            },
+            "StoreApproverRequest": {
+                "required": [
+                    "name",
+                    "email"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Nama approver",
+                        "type": "string",
+                        "example": "John Doe"
+                    }
+                },
+                "type": "object"
+            },
+            "StoreExpenseRequest": {
+                "required": [
+                    "amount"
+                ],
+                "properties": {
+                    "amount": {
+                        "description": "Jumlah pengeluaran",
+                        "type": "integer",
+                        "minimum": 1,
+                        "example": 100000
+                    }
+                },
+                "type": "object"
+            },
+            "ExpenseResource": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "amount": {
+                        "type": "integer",
+                        "example": 100000
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "approved"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Approvers",
+            "description": "Approver operations"
+        },
+        {
+            "name": "Expenses",
+            "description": "Expense operations"
+        },
+        {
+            "name": "ApprovalStages",
+            "description": "ApprovalStages"
+        }
+    ]
+}
